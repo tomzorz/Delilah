@@ -10,5 +10,7 @@ namespace Delilah
 	public static class Config
 	{
 		public static string BackgroundVideoFolder => Settings.Default.backgroundVideoFolder;
+
+
 	}
 }

@@ -3,11 +3,24 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Delilah"
-        mc:Ignorable="d" ResizeMode="NoResize" WindowStyle="None" WindowState="Maximized" ShowInTaskbar="False"
-        Title="MainWindow" Height="350" Width="525" Loaded="MainWindow_OnLoaded">
+        xmlns:local="clr-namespace:Delilah" d:DesignWidth="800" d:DesignHeight="450"
+        mc:Ignorable="d" ResizeMode="NoResize" WindowStyle="None" WindowState="Maximized" ShowInTaskbar="False" x:Name="MainWindowRoot"
+        Title="MainWindow" Loaded="MainWindow_OnLoaded" KeyDown="MainWindow_OnKeyDown">
     <Grid>
         <MediaElement x:Name="BackgroundVideoHost" MediaEnded="BackgroundVideoHost_OnMediaEnded" LoadedBehavior="Play" />
-
+        <Viewbox VerticalAlignment="Stretch" HorizontalAlignment="Left">
+            <Grid Width="800" Height="450">
+                <ScrollViewer Padding="12,0,0,0" VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Disabled" VerticalAlignment="Stretch" HorizontalAlignment="Left">
+                    <ItemsControl Margin="0,250,0,0" VerticalAlignment="Center" HorizontalAlignment="Left" ItemsSource="{Binding ElementName=MainWindowRoot, Path=CurrentMenuItems}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <RadioButton Style="{StaticResource MenuRadioButtonStyle}" FontSize="20"
+                                             Foreground="White" GroupName="Menu" IsChecked="{Binding IsSelected, Mode=TwoWay}" Content="{Binding Name}" />
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+            </Grid>
+        </Viewbox>
     </Grid>
 </Window>
