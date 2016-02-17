@@ -16,6 +16,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 using Delilah.Providers;
 
 namespace Delilah
@@ -29,6 +30,46 @@ namespace Delilah
 		{
 			_currentMenuItems = new ObservableCollection<MenuOption>();
 			InitializeComponent();
+			MainWindowRoot.MouseMove += MainWindow_OnMouseMove;
+			_dt = new DispatcherTimer
+			{
+				Interval = TimeSpan.FromSeconds(1.0)
+			};
+			_dt.Tick += _dt_Tick;
+			_dt.Start();
+		}
+
+		private int _elapsed = 0;
+
+		private bool Hidden
+		{
+			get { return _hidden; }
+			set
+			{
+				_hidden = value;
+				MainWindowRoot.Cursor = _hidden ? Cursors.None : Cursors.Arrow;
+				InteractiveContent.Visibility = _hidden ? Visibility.Collapsed : Visibility.Visible;
+			}
+		}
+
+		public string Time
+		{
+			get { return _time; }
+			set
+			{
+				if(value == _time) return;
+				_time = value;
+				OnPropertyChanged();
+			}
+		}
+
+		private void _dt_Tick(object sender, EventArgs e)
+		{
+			Time = DateTime.Now.ToString("T");
+			if (Hidden) return;
+			_elapsed += 1;
+			if (_elapsed <= 30) return;
+			Hidden = true;
 		}
 
 		private void MainWindow_OnLoaded(object sender, RoutedEventArgs e)
@@ -71,11 +112,20 @@ namespace Delilah
 		}
 
 		private ObservableCollection<MenuOption> _currentMenuItems;
+		private DispatcherTimer _dt;
+		private string _time;
+		private bool _hidden;
 
 		public ObservableCollection<MenuOption> CurrentMenuItems => _currentMenuItems;
 
 		private void MainWindow_OnKeyDown(object sender, KeyEventArgs e)
 		{
+			if (Hidden)
+			{
+				_elapsed = 0;
+				Hidden = false;
+				return;
+			}
 			switch (e.Key)
 			{
 				case Key.Escape:
@@ -154,6 +204,12 @@ namespace Delilah
 		protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
 		{
 			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+		}
+
+		private void MainWindow_OnMouseMove(object sender, MouseEventArgs e)
+		{
+			_elapsed = 0;
+			Hidden = false;
 		}
 	}
 }
