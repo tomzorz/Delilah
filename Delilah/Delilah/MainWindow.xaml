@@ -23,9 +23,9 @@
             </Grid>
         </Viewbox>
         <Viewbox VerticalAlignment="Stretch" HorizontalAlignment="Right">
-            <Grid Width="400" Height="450">
-                <TextBlock Text="{Binding ElementName=MainWindowRoot, Path=Time}" Foreground="White" Opacity="0.2" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="20" FontSize="60"
-                           FontWeight="Light" FontFamily="Segoe UI Mono" />
+            <Grid Width="340" Height="450">
+                <TextBlock Text="{Binding ElementName=MainWindowRoot, Path=Time}" Foreground="White" Opacity="0.2" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="20" FontSize="90"
+                           FontWeight="Light" />
             </Grid>
         </Viewbox>
     </Grid>

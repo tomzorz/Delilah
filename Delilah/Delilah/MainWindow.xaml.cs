@@ -65,7 +65,7 @@ namespace Delilah
 
 		private void _dt_Tick(object sender, EventArgs e)
 		{
-			Time = DateTime.Now.ToString("T");
+			Time = DateTime.Now.ToString("HH:mm");
 			if (Hidden) return;
 			_elapsed += 1;
 			if (_elapsed <= 30) return;
